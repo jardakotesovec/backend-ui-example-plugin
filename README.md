@@ -7,4 +7,4 @@ Example plugin to illustrate
 - How to extend existing ui-library component
 
 
-![image illustrating plugin example ui](docs/plugin_ui/image.svg)
+![image illustrating plugin example ui](docs/plugin_ui.png)
