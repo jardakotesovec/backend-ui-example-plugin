@@ -9,7 +9,7 @@
  *}
 
 <tab id="settingTabExample" label="{translate key="plugins.generic.backendUiExample.settingTabExample"}">
-    <example-tab :init-data="backendUiExampleData" />
+    <bui-example-tab :init-data="backendUiExampleData" />
 </tab>
 
 

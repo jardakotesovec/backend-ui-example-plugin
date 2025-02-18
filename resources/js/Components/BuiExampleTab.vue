@@ -5,7 +5,10 @@
 
     <h3>More complex component from ui-library with data from API</h3>
     <pkp-list>
-      <pkp-list-item v-for="(issue, index) in issues" :key="issue.id">
+      <pkp-list-item
+        v-for="(issue, index) in issues?.items || []"
+        :key="issue.id"
+      >
         <a :href="issue.publishedUrl">{{ issue.identification }}</a>
         <pkp-orderer
           :isDraggable="false"
@@ -17,9 +20,7 @@
       </pkp-list-item>
     </pkp-list>
     <h3>Usage of mixin for handling dialogs.</h3>
-    <my-component-with-dialog />
-    <h3>Extending component</h3>
-    <button-extended class="button-extended"> Extended Button </button-extended>
+    <bui-my-component-with-dialog />
     <h3>Custom styles when needed</h3>
 
     <div class="custom-styling"></div>
@@ -33,44 +34,38 @@
   background-color: blue;
 }
 </style>
-<script>
+<script setup>
+import { ref, watch } from "vue";
+const { useUrl } = pkp.modules.useUrl;
+const { useFetch } = pkp.modules.useFetch;
+
 function arraymove(arr, fromIndex, toIndex) {
   var element = arr[fromIndex];
   arr.splice(fromIndex, 1);
   arr.splice(toIndex, 0, element);
 }
 
-export default {
-  props: {
-    initData: Object,
-  },
-  data() {
-    return {
-      count: 0,
-      issues: [],
-    };
-  },
-  created() {
-    fetch(`${this.initData.apiUrl}issues`)
-      .then((response) => response.json())
-      .then((issues) => {
-        this.issues = issues?.items || [];
-      });
-  },
-  methods: {
-    incrementCount() {
-      this.count += 2;
-    },
-    up(itemIndex) {
-      if (itemIndex > 0) {
-        arraymove(this.issues, itemIndex, itemIndex - 1);
-      }
-    },
-    down(itemIndex) {
-      if (itemIndex < this.issues.length - 1) {
-        arraymove(this.issues, itemIndex, itemIndex + 1);
-      }
-    },
-  },
-};
+const props = defineProps({ initData: { type: Object, required: true } });
+
+const count = ref(0);
+
+const { apiUrl } = useUrl("issues");
+
+const { data: issues, fetch: fetchIssues } = useFetch(apiUrl);
+
+fetchIssues();
+
+function incrementCount() {
+  count.value += 2;
+}
+function up(itemIndex) {
+  if (itemIndex > 0) {
+    arraymove(issues.value?.items, itemIndex, itemIndex - 1);
+  }
+}
+function down(itemIndex) {
+  if (itemIndex < issues.value?.items.length - 1) {
+    arraymove(issues.value?.items, itemIndex, itemIndex + 1);
+  }
+}
 </script>
