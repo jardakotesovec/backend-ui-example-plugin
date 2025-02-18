@@ -1,5 +1,9 @@
 # Backend UI Example Plugin
+
+Compatible with OJS 3.4. For upcoming version 3.5, check main branch.
+
 Example plugin to illustrate
+
 - How to inject your own vue component to smarty template
 - How to use components from ui-library
 - How to use dialog mixin
