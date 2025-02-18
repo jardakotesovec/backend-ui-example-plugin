@@ -19,7 +19,7 @@
         />
       </pkp-list-item>
     </pkp-list>
-    <h3>Usage of mixin for handling dialogs.</h3>
+    <h3>Usage of composable for handling dialogs.</h3>
     <bui-my-component-with-dialog />
     <h3>Custom styles when needed</h3>
 

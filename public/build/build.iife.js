@@ -81,7 +81,7 @@
             }),
             _: 1
           }),
-          _cache[2] || (_cache[2] = vue.createElementVNode("h3", null, "Usage of mixin for handling dialogs.", -1)),
+          _cache[2] || (_cache[2] = vue.createElementVNode("h3", null, "Usage of composable for handling dialogs.", -1)),
           vue.createVNode(_component_bui_my_component_with_dialog),
           _cache[3] || (_cache[3] = vue.createElementVNode("h3", null, "Custom styles when needed", -1)),
           _cache[4] || (_cache[4] = vue.createElementVNode("div", { class: "custom-styling" }, null, -1))
@@ -89,7 +89,7 @@
       };
     }
   };
-  const BuiExampleTab = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["__scopeId", "data-v-edcb5fad"]]);
+  const BuiExampleTab = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["__scopeId", "data-v-ae7262cf"]]);
   const _sfc_main$2 = {
     __name: "BuiMyComponentWithDialog",
     setup(__props) {
@@ -215,6 +215,7 @@
       };
     }
   };
+  pkp.registry.registerComponent("BuiPublicationListing", _sfc_main);
   pkp.registry.registerComponent("BuiExampleTab", BuiExampleTab);
   pkp.registry.registerComponent(
     "BuiMyComponentWithDialog",
@@ -228,8 +229,8 @@
   pkp.registry.storeExtendFn(
     "fileManager_SUBMISSION_FILES",
     "getColumns",
-    (originalResult, args) => {
-      const newColumns = [...originalResult];
+    (columns, args) => {
+      const newColumns = [...columns];
       newColumns.splice(newColumns.length - 1, 0, {
         header: "iThenticate",
         component: "BuiFileManagerCellIthenticate",

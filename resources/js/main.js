@@ -3,6 +3,7 @@ import BuiMyComponentWithDialog from "./Components/BuiMyComponentWithDialog.vue"
 import BuiFileManagerCellIthenticate from "./Components/BuiFileManagerCellIthenticate.vue";
 import BuiPublicationListing from "./Components/BuiPublicationListing.vue";
 
+pkp.registry.registerComponent("BuiPublicationListing", BuiPublicationListing);
 pkp.registry.registerComponent("BuiExampleTab", BuiExampleTab);
 pkp.registry.registerComponent(
   "BuiMyComponentWithDialog",
@@ -20,8 +21,8 @@ pkp.registry.registerComponent(
 pkp.registry.storeExtendFn(
   "fileManager_SUBMISSION_FILES",
   "getColumns",
-  (originalResult, args) => {
-    const newColumns = [...originalResult];
+  (columns, args) => {
+    const newColumns = [...columns];
     newColumns.splice(newColumns.length - 1, 0, {
       header: "iThenticate",
       component: "BuiFileManagerCellIthenticate",
