@@ -5,7 +5,6 @@
         {{ "Publications listing" }}
       </h3>
     </template>
-
     <PkpTableHeader>
       <PkpTableColumn>Id</PkpTableColumn>
       <PkpTableColumn>Title</PkpTableColumn>

@@ -82,9 +82,6 @@ pkp.registry.storeExtendFn(
 );
 
 // Extending workflow menu
-//const workflowStore = pkp.registry.getPiniaStore("workflow");
-//console.log("workflow fns list");
-//console.log(pkp.registry.storeListExtendableFns());
 pkp.registry.storeExtendFn("workflow", "getMenuItems", (menuItems, args) => {
   const updatedMenuItems = [
     ...menuItems,
@@ -95,7 +92,6 @@ pkp.registry.storeExtendFn("workflow", "getMenuItems", (menuItems, args) => {
       actionArgs: { primaryMenuItem: "buiCustomMenu" },
     },
   ];
-  console.log("menuItems:", menuItems);
 
   return updatedMenuItems;
 });
@@ -104,21 +100,21 @@ pkp.registry.storeExtendFn("workflow", "getMenuItems", (menuItems, args) => {
 pkp.registry.storeExtendFn(
   "workflow",
   "getPrimaryItems",
-  (originalResult, args) => {
+  (primaryItems, args) => {
     if (
       args?.selectedMenuState?.primaryMenuItem === "workflow" &&
       args?.selectedMenuState?.stageId ===
         pkp.const.WORKFLOW_STAGE_ID_SUBMISSION
     ) {
       return [
-        ...originalResult,
+        ...primaryItems,
         {
           component: "BuiPublicationListing",
           props: { submission: args.submission },
         },
       ];
     } else {
-      return originalResult;
+      return primaryItems;
     }
   }
 );

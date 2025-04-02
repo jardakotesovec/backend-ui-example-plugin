@@ -297,18 +297,18 @@
   pkp.registry.storeExtendFn(
     "workflow",
     "getPrimaryItems",
-    (originalResult, args) => {
+    (primaryItems, args) => {
       var _a, _b;
       if (((_a = args == null ? void 0 : args.selectedMenuState) == null ? void 0 : _a.primaryMenuItem) === "workflow" && ((_b = args == null ? void 0 : args.selectedMenuState) == null ? void 0 : _b.stageId) === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION) {
         return [
-          ...originalResult,
+          ...primaryItems,
           {
             component: "BuiPublicationListing",
             props: { submission: args.submission }
           }
         ];
       } else {
-        return originalResult;
+        return primaryItems;
       }
     }
   );
