@@ -1,5 +1,7 @@
 <template>
   <div class="container">
+    <h3>{{ t("plugins.generic.backendUiExample.localizedTitle") }}</h3>
+    <p>{{ t("plugins.generic.backendUiExample.localizedTitleDescription") }}</p>
     <h3>Simple Vue interaction</h3>
     <pkp-button @click="incrementCount">count is {{ count }}</pkp-button>
 
@@ -21,23 +23,31 @@
     </pkp-list>
     <h3>Usage of composable for handling dialogs.</h3>
     <bui-my-component-with-dialog />
-    <h3>Custom styles when needed</h3>
-
+    <h3 class="custom-text-styling-heading">Custom styles when needed</h3>
     <div class="custom-styling"></div>
   </div>
 </template>
 
 <style scoped>
 .custom-styling {
-  margin-top: 10px;
-  height: 30px;
-  background-color: blue;
+  margin-top: 2rem;
+  height: 3rem;
+  background-color: var(--color-stage-in-review);
+}
+
+.custom-text-styling-heading {
+  margin-top: 1rem;
+  font: var(--font-3xl-bold);
+  color: var(--text-color-heading);
 }
 </style>
 <script setup>
 import { ref, watch } from "vue";
 const { useUrl } = pkp.modules.useUrl;
 const { useFetch } = pkp.modules.useFetch;
+const { useLocalize } = pkp.modules.useLocalize;
+
+const { t } = useLocalize();
 
 function arraymove(arr, fromIndex, toIndex) {
   var element = arr[fromIndex];

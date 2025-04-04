@@ -19,3 +19,32 @@ msgstr "Illustrates how to extend UI using vue.js components on various places."
 
 msgid "plugins.generic.backendUiExample.settingTabExample"
 msgstr "Setting Example tab"
+
+msgid "plugins.generic.backendUiExample.localizedTitle"
+msgstr "Localized Title"
+
+msgid "plugins.generic.backendUiExample.localizedTitleDescription"
+msgstr "Localised strings are automatically detected in the vue.js components in build time using vite plugin."
+
+msgid "plugins.generic.backendUiExample.publicationsListing"
+msgstr "Publications Listing"
+
+msgid "plugins.generic.backendUiExample.publicationsListing.id"
+msgstr "Id"
+
+msgid "plugins.generic.backendUiExample.publicationsListing.title"
+msgstr "Title"
+
+
+msgid "plugins.generic.backendUiExample.exampleDialog.title"
+msgstr "Submit Article"
+
+msgid "plugins.generic.backendUiExample.exampleDialog.message"
+msgstr "Are you sure you want to submit this article?"
+
+msgid "plugins.generic.backendUiExample.exampleDialog.yes"
+msgstr "Yes"
+
+msgid "plugins.generic.backendUiExample.exampleDialog.no"
+msgstr "No"
+

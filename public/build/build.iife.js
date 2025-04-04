@@ -7,7 +7,7 @@
     }
     return target;
   };
-  const _hoisted_1 = { class: "container" };
+  const _hoisted_1$1 = { class: "container" };
   const _hoisted_2 = ["href"];
   const _sfc_main$3 = {
     __name: "BuiExampleTab",
@@ -15,6 +15,8 @@
     setup(__props) {
       const { useUrl } = pkp.modules.useUrl;
       const { useFetch } = pkp.modules.useFetch;
+      const { useLocalize } = pkp.modules.useLocalize;
+      const { t } = useLocalize();
       function arraymove(arr, fromIndex, toIndex) {
         var element = arr[fromIndex];
         arr.splice(fromIndex, 1);
@@ -45,7 +47,9 @@
         const _component_pkp_list_item = vue.resolveComponent("pkp-list-item");
         const _component_pkp_list = vue.resolveComponent("pkp-list");
         const _component_bui_my_component_with_dialog = vue.resolveComponent("bui-my-component-with-dialog");
-        return vue.openBlock(), vue.createElementBlock("div", _hoisted_1, [
+        return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$1, [
+          vue.createElementVNode("h3", null, vue.toDisplayString(vue.unref(t)("plugins.generic.backendUiExample.localizedTitle")), 1),
+          vue.createElementVNode("p", null, vue.toDisplayString(vue.unref(t)("plugins.generic.backendUiExample.localizedTitleDescription")), 1),
           _cache[0] || (_cache[0] = vue.createElementVNode("h3", null, "Simple Vue interaction", -1)),
           vue.createVNode(_component_pkp_button, { onClick: incrementCount }, {
             default: vue.withCtx(() => [
@@ -83,33 +87,34 @@
           }),
           _cache[2] || (_cache[2] = vue.createElementVNode("h3", null, "Usage of composable for handling dialogs.", -1)),
           vue.createVNode(_component_bui_my_component_with_dialog),
-          _cache[3] || (_cache[3] = vue.createElementVNode("h3", null, "Custom styles when needed", -1)),
+          _cache[3] || (_cache[3] = vue.createElementVNode("h3", { class: "custom-text-styling-heading" }, "Custom styles when needed", -1)),
           _cache[4] || (_cache[4] = vue.createElementVNode("div", { class: "custom-styling" }, null, -1))
         ]);
       };
     }
   };
-  const BuiExampleTab = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["__scopeId", "data-v-ae7262cf"]]);
+  const BuiExampleTab = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["__scopeId", "data-v-cc142055"]]);
   const _sfc_main$2 = {
     __name: "BuiMyComponentWithDialog",
     setup(__props) {
       const { useModal } = pkp.modules.useModal;
+      const { useLocalize } = pkp.modules.useLocalize;
+      const { t } = useLocalize();
       const { openDialog } = useModal();
       function openExampleDialog() {
         openDialog({
-          name: "example",
-          title: "Submit Article",
-          message: "Are you sure you want to submit this article?",
+          title: t("plugins.generic.backendUiExample.exampleDialog.title"),
+          message: t("plugins.generic.backendUiExample.exampleDialog.message"),
           actions: [
             {
-              label: "Yes",
+              label: t("plugins.generic.backendUiExample.exampleDialog.yes"),
               isPrimary: true,
               callback: (close) => {
                 close();
               }
             },
             {
-              label: "No",
+              label: t("plugins.generic.backendUiExample.exampleDialog.no"),
               isWarnable: true,
               callback: (close) => {
                 close();
@@ -150,12 +155,13 @@
       };
     }
   };
+  const _hoisted_1 = { class: "" };
   const _sfc_main = {
     __name: "BuiPublicationListing",
     props: { submission: { type: Object, required: true } },
     setup(__props) {
       const { useLocalize } = pkp.modules.useLocalize;
-      const { localizeSubmission } = useLocalize();
+      const { t, localizeSubmission } = useLocalize();
       return (_ctx, _cache) => {
         const _component_PkpTableColumn = vue.resolveComponent("PkpTableColumn");
         const _component_PkpTableHeader = vue.resolveComponent("PkpTableHeader");
@@ -164,22 +170,22 @@
         const _component_PkpTableBody = vue.resolveComponent("PkpTableBody");
         const _component_PkpTable = vue.resolveComponent("PkpTable");
         return vue.openBlock(), vue.createBlock(_component_PkpTable, null, {
-          label: vue.withCtx(() => _cache[0] || (_cache[0] = [
-            vue.createElementVNode("h3", { class: "" }, vue.toDisplayString("Publications listing"), -1)
-          ])),
+          label: vue.withCtx(() => [
+            vue.createElementVNode("h3", _hoisted_1, vue.toDisplayString(vue.unref(t)("plugins.generic.backendUiExample.publicationsListing")), 1)
+          ]),
           default: vue.withCtx(() => [
             vue.createVNode(_component_PkpTableHeader, null, {
               default: vue.withCtx(() => [
                 vue.createVNode(_component_PkpTableColumn, null, {
-                  default: vue.withCtx(() => _cache[1] || (_cache[1] = [
-                    vue.createTextVNode("Id")
-                  ])),
+                  default: vue.withCtx(() => [
+                    vue.createTextVNode(vue.toDisplayString(vue.unref(t)("plugins.generic.backendUiExample.publicationsListing.id")), 1)
+                  ]),
                   _: 1
                 }),
                 vue.createVNode(_component_PkpTableColumn, null, {
-                  default: vue.withCtx(() => _cache[2] || (_cache[2] = [
-                    vue.createTextVNode("Title")
-                  ])),
+                  default: vue.withCtx(() => [
+                    vue.createTextVNode(vue.toDisplayString(vue.unref(t)("plugins.generic.backendUiExample.publicationsListing.title")), 1)
+                  ]),
                   _: 1
                 })
               ]),
@@ -291,7 +297,6 @@
         actionArgs: { primaryMenuItem: "buiCustomMenu" }
       }
     ];
-    console.log("menuItems:", menuItems);
     return updatedMenuItems;
   });
   pkp.registry.storeExtendFn(

@@ -6,17 +6,18 @@
 
 <script setup>
 const { useModal } = pkp.modules.useModal;
+const { useLocalize } = pkp.modules.useLocalize;
 
+const { t } = useLocalize();
 const { openDialog } = useModal();
 
 function openExampleDialog() {
   openDialog({
-    name: "example",
-    title: "Submit Article",
-    message: "Are you sure you want to submit this article?",
+    title: t("plugins.generic.backendUiExample.exampleDialog.title"),
+    message: t("plugins.generic.backendUiExample.exampleDialog.message"),
     actions: [
       {
-        label: "Yes",
+        label: t("plugins.generic.backendUiExample.exampleDialog.yes"),
         isPrimary: true,
         callback: (close) => {
           close();
@@ -24,7 +25,7 @@ function openExampleDialog() {
         },
       },
       {
-        label: "No",
+        label: t("plugins.generic.backendUiExample.exampleDialog.no"),
         isWarnable: true,
         callback: (close) => {
           close();

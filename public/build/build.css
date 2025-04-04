@@ -1,6 +1,11 @@
 
-.custom-styling[data-v-ae7262cf] {
-  margin-top: 10px;
-  height: 30px;
-  background-color: blue;
+.custom-styling[data-v-cc142055] {
+  margin-top: 2rem;
+  height: 3rem;
+  background-color: var(--color-stage-in-review);
+}
+.custom-text-styling-heading[data-v-cc142055] {
+  margin-top: 1rem;
+  font: var(--font-3xl-bold);
+  color: var(--text-color-heading);
 }

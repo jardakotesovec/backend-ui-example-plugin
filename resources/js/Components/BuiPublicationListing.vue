@@ -2,12 +2,16 @@
   <PkpTable>
     <template #label>
       <h3 class="">
-        {{ "Publications listing" }}
+        {{ t("plugins.generic.backendUiExample.publicationsListing") }}
       </h3>
     </template>
     <PkpTableHeader>
-      <PkpTableColumn>Id</PkpTableColumn>
-      <PkpTableColumn>Title</PkpTableColumn>
+      <PkpTableColumn>{{
+        t("plugins.generic.backendUiExample.publicationsListing.id")
+      }}</PkpTableColumn>
+      <PkpTableColumn>{{
+        t("plugins.generic.backendUiExample.publicationsListing.title")
+      }}</PkpTableColumn>
     </PkpTableHeader>
     <PkpTableBody>
       <PkpTableRow v-for="publication in submission.publications">
@@ -25,6 +29,6 @@
 <script setup>
 const { useLocalize } = pkp.modules.useLocalize;
 
-const { localizeSubmission } = useLocalize();
+const { t, localizeSubmission } = useLocalize();
 const props = defineProps({ submission: { type: Object, required: true } });
 </script>
