@@ -2,7 +2,16 @@
 
 Compatible with upcoming OJS 3.5 release candidate. For version 3.4 check the `stable-3_4_0` branch.
 
-Example plugin to illustrate
+## Check list to set up build step in your plugin
+
+- Install vite@6 - `npm install --save-dev vite@6`
+- Copy over the i18nExtractKeys.vite.js to make easy to use translation in the vue.js components
+- Copy over vite.config.js, adjust if necessary
+- You can follow the eslint/prettier setup - but thats very much optional
+- Copy over relevant scripts from the `package.json` to your package.json
+- Create `resources/js/main.js`, which will be entry point to register your components
+
+## Scenarios illustrated in this example plugin
 
 - How to inject your own vue component to smarty template
 - How to use components from ui-library

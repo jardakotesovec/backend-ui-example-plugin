@@ -93,7 +93,7 @@
       };
     }
   };
-  const BuiExampleTab = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["__scopeId", "data-v-cc142055"]]);
+  const BuiExampleTab = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["__scopeId", "data-v-0858183c"]]);
   const _sfc_main$2 = {
     __name: "BuiMyComponentWithDialog",
     setup(__props) {

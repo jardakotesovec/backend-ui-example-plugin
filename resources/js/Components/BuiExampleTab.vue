@@ -30,13 +30,12 @@
 
 <style scoped>
 .custom-styling {
-  margin-top: 2rem;
-  height: 3rem;
+  margin-top: var(--spacing-8);
+  height: var(--spacing-12);
   background-color: var(--color-stage-in-review);
 }
 
 .custom-text-styling-heading {
-  margin-top: 1rem;
   font: var(--font-3xl-bold);
   color: var(--text-color-heading);
 }

@@ -1,11 +1,10 @@
 
-.custom-styling[data-v-cc142055] {
-  margin-top: 2rem;
-  height: 3rem;
+.custom-styling[data-v-0858183c] {
+  margin-top: var(--spacing-8);
+  height: var(--spacing-12);
   background-color: var(--color-stage-in-review);
 }
-.custom-text-styling-heading[data-v-cc142055] {
-  margin-top: 1rem;
+.custom-text-styling-heading[data-v-0858183c] {
   font: var(--font-3xl-bold);
   color: var(--text-color-heading);
 }
