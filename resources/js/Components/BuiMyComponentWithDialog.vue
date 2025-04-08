@@ -1,6 +1,8 @@
 <template>
   <div>
-    <pkp-button @click="openExampleDialog">openDialog</pkp-button>
+    <PkpButton @click="openExampleDialog">{{
+      t("plugins.generic.backendUiExample.openDialog")
+    }}</PkpButton>
   </div>
 </template>
 

@@ -3,8 +3,10 @@
   "plugins.generic.backendUiExample.exampleDialog.no",
   "plugins.generic.backendUiExample.exampleDialog.title",
   "plugins.generic.backendUiExample.exampleDialog.yes",
+  "plugins.generic.backendUiExample.ithenticate",
   "plugins.generic.backendUiExample.localizedTitle",
   "plugins.generic.backendUiExample.localizedTitleDescription",
+  "plugins.generic.backendUiExample.openDialog",
   "plugins.generic.backendUiExample.publicationsListing",
   "plugins.generic.backendUiExample.publicationsListing.id",
   "plugins.generic.backendUiExample.publicationsListing.title"

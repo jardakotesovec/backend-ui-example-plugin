@@ -25,10 +25,15 @@
     <bui-my-component-with-dialog />
     <h3 class="custom-text-styling-heading">Custom styles when needed</h3>
     <div class="custom-styling"></div>
+    <h3 class="custom-text-styling-heading">Custom form</h3>
+    <div><pkp-form v-bind="initData.customForm"></pkp-form></div>
   </div>
 </template>
 
 <style scoped>
+h3 {
+  margin-top: var(--spacing-8);
+}
 .custom-styling {
   margin-top: var(--spacing-8);
   height: var(--spacing-12);
@@ -41,7 +46,7 @@
 }
 </style>
 <script setup>
-import { ref, watch } from "vue";
+import { ref } from "vue";
 const { useUrl } = pkp.modules.useUrl;
 const { useFetch } = pkp.modules.useFetch;
 const { useLocalize } = pkp.modules.useLocalize;
@@ -55,7 +60,6 @@ function arraymove(arr, fromIndex, toIndex) {
 }
 
 const props = defineProps({ initData: { type: Object, required: true } });
-
 const count = ref(0);
 
 const { apiUrl } = useUrl("issues");

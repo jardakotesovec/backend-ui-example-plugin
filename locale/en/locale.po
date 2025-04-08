@@ -48,3 +48,13 @@ msgstr "Yes"
 msgid "plugins.generic.backendUiExample.exampleDialog.no"
 msgstr "No"
 
+msgid "plugins.generic.backendUiExample.ithenticate"
+msgstr "iThenticate"
+
+msgid "plugins.generic.backendUiExample.form.title"
+msgstr "Form Title Example"
+
+
+msgid "plugins.generic.backendUiExample.openDialog"
+msgstr "Open Dialog"
+

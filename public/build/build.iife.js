@@ -47,6 +47,7 @@
         const _component_pkp_list_item = vue.resolveComponent("pkp-list-item");
         const _component_pkp_list = vue.resolveComponent("pkp-list");
         const _component_bui_my_component_with_dialog = vue.resolveComponent("bui-my-component-with-dialog");
+        const _component_pkp_form = vue.resolveComponent("pkp-form");
         return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$1, [
           vue.createElementVNode("h3", null, vue.toDisplayString(vue.unref(t)("plugins.generic.backendUiExample.localizedTitle")), 1),
           vue.createElementVNode("p", null, vue.toDisplayString(vue.unref(t)("plugins.generic.backendUiExample.localizedTitleDescription")), 1),
@@ -88,12 +89,16 @@
           _cache[2] || (_cache[2] = vue.createElementVNode("h3", null, "Usage of composable for handling dialogs.", -1)),
           vue.createVNode(_component_bui_my_component_with_dialog),
           _cache[3] || (_cache[3] = vue.createElementVNode("h3", { class: "custom-text-styling-heading" }, "Custom styles when needed", -1)),
-          _cache[4] || (_cache[4] = vue.createElementVNode("div", { class: "custom-styling" }, null, -1))
+          _cache[4] || (_cache[4] = vue.createElementVNode("div", { class: "custom-styling" }, null, -1)),
+          _cache[5] || (_cache[5] = vue.createElementVNode("h3", { class: "custom-text-styling-heading" }, "Custom form", -1)),
+          vue.createElementVNode("div", null, [
+            vue.createVNode(_component_pkp_form, vue.normalizeProps(vue.guardReactiveProps(__props.initData.customForm)), null, 16)
+          ])
         ]);
       };
     }
   };
-  const BuiExampleTab = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["__scopeId", "data-v-0858183c"]]);
+  const BuiExampleTab = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["__scopeId", "data-v-46d8adf4"]]);
   const _sfc_main$2 = {
     __name: "BuiMyComponentWithDialog",
     setup(__props) {
@@ -124,12 +129,12 @@
         });
       }
       return (_ctx, _cache) => {
-        const _component_pkp_button = vue.resolveComponent("pkp-button");
+        const _component_PkpButton = vue.resolveComponent("PkpButton");
         return vue.openBlock(), vue.createElementBlock("div", null, [
-          vue.createVNode(_component_pkp_button, { onClick: openExampleDialog }, {
-            default: vue.withCtx(() => _cache[0] || (_cache[0] = [
-              vue.createTextVNode("openDialog")
-            ])),
+          vue.createVNode(_component_PkpButton, { onClick: openExampleDialog }, {
+            default: vue.withCtx(() => [
+              vue.createTextVNode(vue.toDisplayString(vue.unref(t)("plugins.generic.backendUiExample.openDialog")), 1)
+            ]),
             _: 1
           })
         ]);
@@ -233,12 +238,20 @@
     _sfc_main$1
   );
   pkp.registry.storeExtendFn(
+    // pinia store name
     "fileManager_SUBMISSION_FILES",
+    // function to extend
     "getColumns",
+    // columns is the result from the original function, which can be adjusted
+    // args are the arguments that the getColumns function retrieved to calculate the columns
     (columns, args) => {
       const newColumns = [...columns];
+      const { useLocalize } = pkp.modules.useLocalize;
+      const { t } = useLocalize();
       newColumns.splice(newColumns.length - 1, 0, {
-        header: "iThenticate",
+        // header label of new column
+        header: t("plugins.generic.backendUiExample.ithenticate"),
+        // component responsible for rendering that table cell
         component: "BuiFileManagerCellIthenticate",
         props: {}
       });

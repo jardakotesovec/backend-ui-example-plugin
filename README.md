@@ -10,15 +10,29 @@ Compatible with upcoming OJS 3.5 release candidate. For version 3.4 check the `s
 - You can follow the eslint/prettier setup - but thats very much optional
 - Copy over relevant scripts from the `package.json` to your package.json
 - Create `resources/js/main.js`, which will be entry point to register your components
+- Check out `register` function in `BackendUiExamplePlugin.inc.php` to see how to register the new JS and CSS file.
 
 ## Scenarios illustrated in this example plugin
 
-- How to inject your own vue component to smarty template
-- How to use components from ui-library
-- How to use dialog via useModal composable
-- How to do API data fetching, using useFetch and useUrl composables
-- How to extend FileManager with additional column and custom action
-- How to extend WorkflowPage with new menu and new component in existing menu
+### How to inject your own vue component to smarty template
+
+Additional tab is injected in Settings -> Website -> Setting Example tab
+
+### How to use components from ui-library
+
+Components in ui-library are globally available with `pkp` prefix. Check for example `BuiPublicationListing.vue`, which is leveraging table component.
+
+### How to use dialog via useModal composable
+
+Check out `BuiMyComponentWithDialog.vue` to see example. Another useful example is in main.js, with new custom action for file manager, which also open dialog.
+
+### How to do API data fetching, using useFetch and useUrl composables
+
+Check out `BuiExampleTab.vue`, where interacting with API using `useFetch` and `useUrl` is illustrated.
+
+### How to extend FileManager with additional column and custom action
+
+Checkout `main.js` to see how to add custom column or action.
 
 Also check out generic plugin template https://github.com/pkp/pluginTemplate to see how the cypress test can be written to automatically test your plugin.
 

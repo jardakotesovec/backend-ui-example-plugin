@@ -10,8 +10,10 @@
  * @brief Backend Ui Example Plugin
  */
 
- use PKP\plugins\GenericPlugin;
- use PKP\plugins\Hook;
+use PKP\plugins\GenericPlugin;
+use PKP\plugins\Hook;
+use PKP\components\forms\FormComponent;
+use PKP\components\forms\FieldText;
 
 class BackendUiExamplePlugin extends GenericPlugin {
     /**
@@ -24,9 +26,13 @@ class BackendUiExamplePlugin extends GenericPlugin {
         if (parent::register($category, $path, $mainContextId)) {
             if ($this->getEnabled($mainContextId)) {
 
+                // To Attach smarty template to the settings template
                 Hook::add('Template::Settings::website', [$this, 'callbackShowWebsiteSettingsTabs']);
+                // To Attach data to the page, so it can be passed 
                 Hook::add('TemplateManager::display', [$this, 'callbackTemplateManagerDisplay']);
 
+
+                // Registering build file for JS and CSS to be loaded
                 $request = Application::get()->getRequest();
                 $templateMgr = TemplateManager::getManager($request);
                 $this->addJavaScript($request, $templateMgr);
@@ -42,7 +48,7 @@ class BackendUiExamplePlugin extends GenericPlugin {
     public function addJavaScript($request, $templateMgr)
     {
         $templateMgr->addJavaScript(
-            'MyComponent1',
+            'BackendUiExample',
             "{$request->getBaseUrl()}/{$this->getPluginPath()}/public/build/build.iife.js",
             [
                 'inline' => false,
@@ -72,6 +78,45 @@ class BackendUiExamplePlugin extends GenericPlugin {
     }
 
     /**
+     * Create a simple example form using FormComponent
+     *
+     * @return FormComponent
+     */
+    public function getExampleForm()
+    {
+        $request = Application::get()->getRequest();
+        $context = $request->getContext();
+        $dispatcher = $request->getDispatcher();
+
+        $site = $request->getSite();
+        $locales = $site->getSupportedLocaleNames();
+        $locales = array_map(fn (string $locale, string $name) => ['key' => $locale, 'label' => $name], array_keys($locales), $locales);
+
+        // Create the form
+        $form = new FormComponent(
+            'examplePluginForm',
+            'POST',
+            $dispatcher->url(
+                $request,
+                Application::ROUTE_API,
+                $context->getData('urlPath'),
+                'examplePlugin/saveSettings'
+            ),
+            $locales
+        );
+
+        // Add text field
+        $form->addField(new FieldText('exampleTitle', [
+            'label' => __('plugins.generic.backendUiExample.form.title'),
+            'isRequired' => true,
+            'groupId' => 'exampleSettings',
+            'value' => '',
+        ]));
+
+        return $form;
+    }
+
+    /**
      * Add state for your component when needed
      *
      * @param string $hookName The name of the invoked hook
@@ -79,21 +124,20 @@ class BackendUiExamplePlugin extends GenericPlugin {
      *
      * @return bool Hook handling status
      */
-    public function  callbackTemplateManagerDisplay($hookName, $args)
+    public function callbackTemplateManagerDisplay($hookName, $args)
     {
         $templateMgr = $args[0];
         $request = & Registry::get('request');
         $dispatcher = $request->getDispatcher();
         $context = $request->getContext();
-
         if($request->getRequestedOp() == 'settings') {
+            // Get the form configuration
+            $form = $this->getExampleForm();
+
+            
             $templateMgr->setState([
                 'backendUiExampleData' => [
-                    'apiUrl' => $dispatcher->url(
-                        $request,
-                        Application::ROUTE_API,
-                        $context->getData('urlPath'),
-                    )
+                    'customForm' => $form->getConfig()
                 ]
             ]);   
         }

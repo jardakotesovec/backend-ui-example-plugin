@@ -19,12 +19,24 @@ pkp.registry.registerComponent(
 
 // Adding iThenticate column
 pkp.registry.storeExtendFn(
+  // pinia store name
   "fileManager_SUBMISSION_FILES",
+  // function to extend
   "getColumns",
+  // columns is the result from the original function, which can be adjusted
+  // args are the arguments that the getColumns function retrieved to calculate the columns
+
   (columns, args) => {
+    // adding new column last to the end
     const newColumns = [...columns];
+
+    const { useLocalize } = pkp.modules.useLocalize;
+    const { t } = useLocalize();
+
     newColumns.splice(newColumns.length - 1, 0, {
-      header: "iThenticate",
+      // header label of new column
+      header: t("plugins.generic.backendUiExample.ithenticate"),
+      // component responsible for rendering that table cell
       component: "BuiFileManagerCellIthenticate",
       props: {},
     });
