@@ -244,10 +244,14 @@
     "getColumns",
     // columns is the result from the original function, which can be adjusted
     // args are the arguments that the getColumns function retrieved to calculate the columns
-    (columns, args) => {
+    (columns, args, context) => {
       const newColumns = [...columns];
       const { useLocalize } = pkp.modules.useLocalize;
       const { t } = useLocalize();
+      console.log(args.file);
+      console.log(context.props.submission);
+      const store = pkp.registry.getPiniaStore("fileManager_SUBMISSION_FILES");
+      console.log(store.files);
       newColumns.splice(newColumns.length - 1, 0, {
         // header label of new column
         header: t("plugins.generic.backendUiExample.ithenticate"),
@@ -261,7 +265,14 @@
   pkp.registry.storeExtendFn(
     "fileManager_SUBMISSION_FILES",
     "getItemActions",
-    (originalResult, args) => {
+    (originalResult, args, context) => {
+      console.log("backend plugin");
+      console.log(args);
+      const fileStore = pkp.registry.getPiniaStore(
+        "fileManager_SUBMISSION_FILES"
+      );
+      console.log(fileStore.title);
+      console.log(context.props.submission);
       return [
         ...originalResult,
         {
