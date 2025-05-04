@@ -14,6 +14,12 @@ use PKP\plugins\GenericPlugin;
 use PKP\plugins\Hook;
 use PKP\components\forms\FormComponent;
 use PKP\components\forms\FieldText;
+use Illuminate\Http\Request as IlluminateRequest;
+use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
+use PKP\core\PKPBaseController;
+use PKP\handler\APIHandler;
+use PKP\security\Role;
 
 class BackendUiExamplePlugin extends GenericPlugin {
     /**
@@ -39,6 +45,8 @@ class BackendUiExamplePlugin extends GenericPlugin {
                 $templateMgr->addStyleSheet('backendUiExampleStyle',"{$request->getBaseUrl()}/{$this->getPluginPath()}/public/build/build.css", [
                     'contexts' => ['backend']
                 ] );
+
+                 $this->addRoute();
             }
             return true;
         }
@@ -160,4 +168,43 @@ class BackendUiExamplePlugin extends GenericPlugin {
     function getDescription() {
         return __('plugins.generic.backendUiExample.description');
     }
+
+    public function addRoute(): void
+    {
+        Hook::add('APIHandler::endpoints::submissions', function(string $hookName, PKPBaseController &$apiController, APIHandler $apiHandler): bool {
+            // This allow to add a route on fly without defining a api controller
+            // Through this allow quick add/modify routes, it's better to use
+            // controller based appraoch which is more structured and understandable
+            $apiHandler->addRoute(
+                'GET',
+                'ithenticate',
+                function (IlluminateRequest $request): JsonResponse {
+
+                    $fileIds = $request->query('fileIds');
+                    $fileStatuses = [];
+                    foreach ($fileIds as $fileId) {
+                        $fileId = trim($fileId);
+                        if (!empty($fileId)) {
+                            // Here you would typically query your database or service
+                            // to get the actual status of each file.
+                            // For this example, we'll use a mock status
+                            $fileStatuses[$fileId] = '75%';
+                        }
+                    }
+
+                    return response()->json($fileStatuses, Response::HTTP_OK);
+                },
+                'test.onfly',
+                [
+                    Role::ROLE_ID_SITE_ADMIN,
+                    Role::ROLE_ID_MANAGER,
+                    Role::ROLE_ID_SUB_EDITOR,
+                ]
+            );
+            
+            
+            return false;
+        });
+    }
+
 }

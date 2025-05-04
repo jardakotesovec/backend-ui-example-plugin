@@ -2,7 +2,7 @@ import BuiExampleTab from "./Components/BuiExampleTab.vue";
 import BuiMyComponentWithDialog from "./Components/BuiMyComponentWithDialog.vue";
 import BuiFileManagerCellIthenticate from "./Components/BuiFileManagerCellIthenticate.vue";
 import BuiPublicationListing from "./Components/BuiPublicationListing.vue";
-
+import { computed, watch } from "vue";
 pkp.registry.registerComponent("BuiPublicationListing", BuiPublicationListing);
 pkp.registry.registerComponent("BuiExampleTab", BuiExampleTab);
 pkp.registry.registerComponent(
@@ -16,32 +16,53 @@ pkp.registry.registerComponent(
 );
 
 // File manager extensions
+pkp.registry.storeExtend("fileManager_SUBMISSION_FILES", (piniaContext) => {
+  const { useUrl } = pkp.modules.useUrl;
+  const { useFetch } = pkp.modules.useFetch;
 
-// Adding iThenticate column
-pkp.registry.storeExtendFn(
-  // pinia store name
-  "fileManager_SUBMISSION_FILES",
-  // function to extend
-  "getColumns",
-  // columns is the result from the original function, which can be adjusted
-  // args are the arguments that the getColumns function retrieved to calculate the columns
+  const fileStore = piniaContext.store;
 
-  (columns, args, context) => {
+  const ithenticateQueryParams = computed(() => {
+    const fileIds = fileStore?.files?.map((file) => file.id) || [];
+
+    return { fileIds };
+  });
+
+  const { apiUrl } = useUrl(`submissions/ithenticate`);
+
+  const { fetch: fetchIthenticateStatus, data: ithenticateStatus } = useFetch(
+    apiUrl,
+    {
+      query: ithenticateQueryParams,
+    }
+  );
+
+  watch(ithenticateQueryParams, (newQueryParams) => {
+    if (newQueryParams?.fileIds?.length) {
+      fetchIthenticateStatus();
+    }
+  });
+
+  fileStore.ithenticateStatus = ithenticateStatus;
+
+  fileStore.extender.extendFn("getColumns", (columns, args) => {
     // adding new column last to the end
+    console.log("extending getColumn");
     const newColumns = [...columns];
 
     const { useLocalize } = pkp.modules.useLocalize;
     const { t } = useLocalize();
 
-    // to get file object
-    console.log(args.file);
+    console.log("columns:");
+    console.log(columns);
 
     // to get prop passed to FileManager
-    console.log(context.props.submission);
+    console.log("submission:");
+    console.log(fileStore.props.submission);
 
     // to get anything thats not available in args/props, but its available on particular store.
-    const store = pkp.registry.getPiniaStore("fileManager_SUBMISSION_FILES");
-    console.log(store.files);
+    console.log("files:");
+    console.log(fileStore.files);
 
     newColumns.splice(newColumns.length - 1, 0, {
       // header label of new column
@@ -52,20 +73,22 @@ pkp.registry.storeExtendFn(
     });
 
     return newColumns;
-  }
-);
+  });
 
-pkp.registry.storeExtendFn(
-  "fileManager_SUBMISSION_FILES",
-  "getItemActions",
-  (originalResult, args, context) => {
-    console.log("backend plugin");
-    console.log(args);
-    const fileStore = pkp.registry.getPiniaStore(
-      "fileManager_SUBMISSION_FILES"
-    );
-    console.log(fileStore.title);
-    console.log(context.props.submission);
+  fileStore.extender.extendFn("getItemActions", (originalResult, args) => {
+    console.log("getItemActions");
+    console.log("file:");
+    console.log(args.file);
+
+    console.log("submission from props:");
+    console.log(fileStore.props.submission);
+
+    if (args.file) {
+      console.log(
+        "ithenticate status:",
+        ithenticateStatus.value?.[args.file.id] || null
+      );
+    }
     return [
       ...originalResult,
       {
@@ -107,29 +130,29 @@ pkp.registry.storeExtendFn(
         },
       },
     ];
-  }
-);
-
-// Extending workflow menu
-pkp.registry.storeExtendFn("workflow", "getMenuItems", (menuItems, args) => {
-  const updatedMenuItems = [
-    ...menuItems,
-    {
-      key: "buiCustomMenu",
-      label: "Custom menu",
-      action: "selectMenu",
-      actionArgs: { primaryMenuItem: "buiCustomMenu" },
-    },
-  ];
-
-  return updatedMenuItems;
+  });
 });
 
-// Render custom component in existing menu
-pkp.registry.storeExtendFn(
-  "workflow",
-  "getPrimaryItems",
-  (primaryItems, args) => {
+pkp.registry.storeExtend("workflow", (piniaContext) => {
+  const workflowStore = piniaContext.store;
+
+  // Extending workflow menu
+  workflowStore.extender.extendFn("getMenuItems", (menuItems, args) => {
+    const updatedMenuItems = [
+      ...menuItems,
+      {
+        key: "buiCustomMenu",
+        label: "Custom menu",
+        action: "selectMenu",
+        actionArgs: { primaryMenuItem: "buiCustomMenu" },
+      },
+    ];
+
+    return updatedMenuItems;
+  });
+
+  // Render custom component in existing menu
+  workflowStore.extender.extendFn("getPrimaryItems", (primaryItems, args) => {
     if (
       args?.selectedMenuState?.primaryMenuItem === "workflow" &&
       args?.selectedMenuState?.stageId ===
@@ -145,14 +168,10 @@ pkp.registry.storeExtendFn(
     } else {
       return primaryItems;
     }
-  }
-);
+  });
 
-// Render custom component in custom menu
-pkp.registry.storeExtendFn(
-  "workflow",
-  "getPrimaryItems",
-  (primaryItems, args) => {
+  // Render custom component in custom menu
+  workflowStore.extender.extendFn("getPrimaryItems", (primaryItems, args) => {
     if (args?.selectedMenuState?.primaryMenuItem === "buiCustomMenu") {
       return [
         {
@@ -162,5 +181,5 @@ pkp.registry.storeExtendFn(
       ];
     }
     return primaryItems;
-  }
-);
+  });
+});

@@ -7,7 +7,7 @@
     }
     return target;
   };
-  const _hoisted_1$1 = { class: "container" };
+  const _hoisted_1$2 = { class: "container" };
   const _hoisted_2 = ["href"];
   const _sfc_main$3 = {
     __name: "BuiExampleTab",
@@ -48,7 +48,7 @@
         const _component_pkp_list = vue.resolveComponent("pkp-list");
         const _component_bui_my_component_with_dialog = vue.resolveComponent("bui-my-component-with-dialog");
         const _component_pkp_form = vue.resolveComponent("pkp-form");
-        return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$1, [
+        return vue.openBlock(), vue.createElementBlock("div", _hoisted_1$2, [
           vue.createElementVNode("h3", null, vue.toDisplayString(vue.unref(t)("plugins.generic.backendUiExample.localizedTitle")), 1),
           vue.createElementVNode("p", null, vue.toDisplayString(vue.unref(t)("plugins.generic.backendUiExample.localizedTitleDescription")), 1),
           _cache[0] || (_cache[0] = vue.createElementVNode("h3", null, "Simple Vue interaction", -1)),
@@ -141,6 +141,7 @@
       };
     }
   };
+  const _hoisted_1$1 = { key: 0 };
   const _sfc_main$1 = {
     __name: "BuiFileManagerCellIthenticate",
     props: { file: { type: Object, required: true } },
@@ -148,12 +149,20 @@
       const { useLocalize } = pkp.modules.useLocalize;
       const props = __props;
       const { localize } = useLocalize();
-      const percentage = vue.computed(() => localize(props.file.name).length);
+      vue.computed(() => localize(props.file.name).length);
+      const fileStore = pkp.registry.getPiniaStore("fileManager_SUBMISSION_FILES");
+      const status = vue.computed(
+        () => {
+          var _a;
+          return ((_a = fileStore == null ? void 0 : fileStore.ithenticateStatus) == null ? void 0 : _a[props.file.id]) || null;
+        }
+      );
       return (_ctx, _cache) => {
+        const _component_PkpSpinner = vue.resolveComponent("PkpSpinner");
         const _component_PkpTableCell = vue.resolveComponent("PkpTableCell");
         return vue.openBlock(), vue.createBlock(_component_PkpTableCell, null, {
           default: vue.withCtx(() => [
-            vue.createElementVNode("span", null, vue.toDisplayString(percentage.value) + "% ", 1)
+            status.value ? (vue.openBlock(), vue.createElementBlock("span", _hoisted_1$1, vue.toDisplayString(status.value), 1)) : (vue.openBlock(), vue.createBlock(_component_PkpSpinner, { key: 1 }))
           ]),
           _: 1
         });
@@ -237,21 +246,40 @@
     "BuiFileManagerCellIthenticate",
     _sfc_main$1
   );
-  pkp.registry.storeExtendFn(
-    // pinia store name
-    "fileManager_SUBMISSION_FILES",
-    // function to extend
-    "getColumns",
-    // columns is the result from the original function, which can be adjusted
-    // args are the arguments that the getColumns function retrieved to calculate the columns
-    (columns, args, context) => {
+  pkp.registry.storeExtend("fileManager_SUBMISSION_FILES", (piniaContext) => {
+    const { useUrl } = pkp.modules.useUrl;
+    const { useFetch } = pkp.modules.useFetch;
+    const fileStore = piniaContext.store;
+    const ithenticateQueryParams = vue.computed(() => {
+      var _a;
+      const fileIds = ((_a = fileStore == null ? void 0 : fileStore.files) == null ? void 0 : _a.map((file) => file.id)) || [];
+      return { fileIds };
+    });
+    const { apiUrl } = useUrl(`submissions/ithenticate`);
+    const { fetch: fetchIthenticateStatus, data: ithenticateStatus } = useFetch(
+      apiUrl,
+      {
+        query: ithenticateQueryParams
+      }
+    );
+    vue.watch(ithenticateQueryParams, (newQueryParams) => {
+      var _a;
+      if ((_a = newQueryParams == null ? void 0 : newQueryParams.fileIds) == null ? void 0 : _a.length) {
+        fetchIthenticateStatus();
+      }
+    });
+    fileStore.ithenticateStatus = ithenticateStatus;
+    fileStore.extender.extendFn("getColumns", (columns, args) => {
+      console.log("extending getColumn");
       const newColumns = [...columns];
       const { useLocalize } = pkp.modules.useLocalize;
       const { t } = useLocalize();
-      console.log(args.file);
-      console.log(context.props.submission);
-      const store = pkp.registry.getPiniaStore("fileManager_SUBMISSION_FILES");
-      console.log(store.files);
+      console.log("columns:");
+      console.log(columns);
+      console.log("submission:");
+      console.log(fileStore.props.submission);
+      console.log("files:");
+      console.log(fileStore.files);
       newColumns.splice(newColumns.length - 1, 0, {
         // header label of new column
         header: t("plugins.generic.backendUiExample.ithenticate"),
@@ -260,19 +288,20 @@
         props: {}
       });
       return newColumns;
-    }
-  );
-  pkp.registry.storeExtendFn(
-    "fileManager_SUBMISSION_FILES",
-    "getItemActions",
-    (originalResult, args, context) => {
-      console.log("backend plugin");
-      console.log(args);
-      const fileStore = pkp.registry.getPiniaStore(
-        "fileManager_SUBMISSION_FILES"
-      );
-      console.log(fileStore.title);
-      console.log(context.props.submission);
+    });
+    fileStore.extender.extendFn("getItemActions", (originalResult, args) => {
+      var _a;
+      console.log("getItemActions");
+      console.log("file:");
+      console.log(args.file);
+      console.log("submission from props:");
+      console.log(fileStore.props.submission);
+      if (args.file) {
+        console.log(
+          "ithenticate status:",
+          ((_a = ithenticateStatus.value) == null ? void 0 : _a[args.file.id]) || null
+        );
+      }
       return [
         ...originalResult,
         {
@@ -309,24 +338,23 @@
           }
         }
       ];
-    }
-  );
-  pkp.registry.storeExtendFn("workflow", "getMenuItems", (menuItems, args) => {
-    const updatedMenuItems = [
-      ...menuItems,
-      {
-        key: "buiCustomMenu",
-        label: "Custom menu",
-        action: "selectMenu",
-        actionArgs: { primaryMenuItem: "buiCustomMenu" }
-      }
-    ];
-    return updatedMenuItems;
+    });
   });
-  pkp.registry.storeExtendFn(
-    "workflow",
-    "getPrimaryItems",
-    (primaryItems, args) => {
+  pkp.registry.storeExtend("workflow", (piniaContext) => {
+    const workflowStore = piniaContext.store;
+    workflowStore.extender.extendFn("getMenuItems", (menuItems, args) => {
+      const updatedMenuItems = [
+        ...menuItems,
+        {
+          key: "buiCustomMenu",
+          label: "Custom menu",
+          action: "selectMenu",
+          actionArgs: { primaryMenuItem: "buiCustomMenu" }
+        }
+      ];
+      return updatedMenuItems;
+    });
+    workflowStore.extender.extendFn("getPrimaryItems", (primaryItems, args) => {
       var _a, _b;
       if (((_a = args == null ? void 0 : args.selectedMenuState) == null ? void 0 : _a.primaryMenuItem) === "workflow" && ((_b = args == null ? void 0 : args.selectedMenuState) == null ? void 0 : _b.stageId) === pkp.const.WORKFLOW_STAGE_ID_SUBMISSION) {
         return [
@@ -339,12 +367,8 @@
       } else {
         return primaryItems;
       }
-    }
-  );
-  pkp.registry.storeExtendFn(
-    "workflow",
-    "getPrimaryItems",
-    (primaryItems, args) => {
+    });
+    workflowStore.extender.extendFn("getPrimaryItems", (primaryItems, args) => {
       var _a;
       if (((_a = args == null ? void 0 : args.selectedMenuState) == null ? void 0 : _a.primaryMenuItem) === "buiCustomMenu") {
         return [
@@ -355,6 +379,6 @@
         ];
       }
       return primaryItems;
-    }
-  );
+    });
+  });
 })(pkp.modules.vue);
