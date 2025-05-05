@@ -30,9 +30,9 @@ Check out `BuiMyComponentWithDialog.vue` to see example. Another useful example 
 
 Check out `BuiExampleTab.vue`, where interacting with API using `useFetch` and `useUrl` is illustrated.
 
-### How to extend FileManager with additional column and custom action
+### How to extend FileManager with additional column and custom action and fetch additional data
 
-Checkout `main.js` to see how to add custom column or action.
+Checkout `main.js` to see how to add custom column or action. Fetching additional data for displayed files is also demonstrated..
 
 Also check out generic plugin template https://github.com/pkp/pluginTemplate to see how the cypress test can be written to automatically test your plugin.
 

@@ -22,6 +22,7 @@ pkp.registry.storeExtend("fileManager_SUBMISSION_FILES", (piniaContext) => {
 
   const fileStore = piniaContext.store;
 
+  // build query params reactively based on current files
   const ithenticateQueryParams = computed(() => {
     const fileIds = fileStore?.files?.map((file) => file.id) || [];
 
@@ -37,12 +38,14 @@ pkp.registry.storeExtend("fileManager_SUBMISSION_FILES", (piniaContext) => {
     }
   );
 
+  // fetch the ithenticate status when the fileIds changes
   watch(ithenticateQueryParams, (newQueryParams) => {
     if (newQueryParams?.fileIds?.length) {
       fetchIthenticateStatus();
     }
   });
 
+  // attach the state to the store, so its possible to retrieve it for example in the components that are injected via JS Hooks
   fileStore.ithenticateStatus = ithenticateStatus;
 
   fileStore.extender.extendFn("getColumns", (columns, args) => {
