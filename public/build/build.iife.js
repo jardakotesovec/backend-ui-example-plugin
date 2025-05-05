@@ -149,7 +149,6 @@
       const { useLocalize } = pkp.modules.useLocalize;
       const props = __props;
       const { localize } = useLocalize();
-      vue.computed(() => localize(props.file.name).length);
       const fileStore = pkp.registry.getPiniaStore("fileManager_SUBMISSION_FILES");
       const status = vue.computed(
         () => {
