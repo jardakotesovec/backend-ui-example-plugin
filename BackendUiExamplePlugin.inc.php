@@ -10,7 +10,6 @@
  * @brief Backend Ui Example Plugin
  */
 
- use PKP\plugins\GenericPlugin;
  use PKP\plugins\Hook;
 
 class BackendUiExamplePlugin extends GenericPlugin {
@@ -24,8 +23,8 @@ class BackendUiExamplePlugin extends GenericPlugin {
         if (parent::register($category, $path, $mainContextId)) {
             if ($this->getEnabled($mainContextId)) {
 
-                Hook::add('Template::Settings::website', [$this, 'callbackShowWebsiteSettingsTabs']);
-                Hook::add('TemplateManager::display', [$this, 'callbackTemplateManagerDisplay']);
+                HookRegistry::register('Template::Settings::website', [$this, 'callbackShowWebsiteSettingsTabs']);
+                HookRegistry::register('TemplateManager::display', [$this, 'callbackTemplateManagerDisplay']);
 
                 $request = Application::get()->getRequest();
                 $templateMgr = TemplateManager::getManager($request);
@@ -47,7 +46,7 @@ class BackendUiExamplePlugin extends GenericPlugin {
             [
                 'inline' => false,
                 'contexts' => ['backend'],
-                'priority' => TemplateManager::STYLE_SEQUENCE_LAST
+                'priority' => STYLE_SEQUENCE_LAST
             ]
         );
     }
@@ -91,7 +90,7 @@ class BackendUiExamplePlugin extends GenericPlugin {
                 'backendUiExampleData' => [
                     'apiUrl' => $dispatcher->url(
                         $request,
-                        Application::ROUTE_API,
+                        ROUTE_API,
                         $context->getData('urlPath'),
                     )
                 ]

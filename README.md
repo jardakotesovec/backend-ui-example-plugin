@@ -1,12 +1,11 @@
 # Backend UI Example Plugin
 
-Compatible with OJS 3.4. For upcoming version 3.5, check main branch.
+Compatible with OJS 3.3. For version 3.4 check out stable-3_4_0 branch and for upcoming version 3.5, check main branch.
 
 Example plugin to illustrate
 
 - How to inject your own vue component to smarty template
-- How to use components from ui-library
-- How to use dialog mixin
+- How to use components from ui-library (for 3.3 only small subset is available - Badge, Icon, PkpButton, Spinner, Tab, Tabs)
 - How to do API data fetching
 - How to extend existing ui-library component
 

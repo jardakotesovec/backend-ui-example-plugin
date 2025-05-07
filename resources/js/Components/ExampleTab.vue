@@ -3,19 +3,12 @@
     <h3>Simple Vue interaction</h3>
     <pkp-button @click="incrementCount">count is {{ count }}</pkp-button>
 
-    <h3>More complex component from ui-library with data from API</h3>
-    <pkp-list>
-      <pkp-list-item v-for="(issue, index) in issues" :key="issue.id">
+    <h3>Data from API</h3>
+    <ul>
+      <li v-for="(issue, index) in issues" :key="issue.id">
         <a :href="issue.publishedUrl">{{ issue.identification }}</a>
-        <pkp-orderer
-          :isDraggable="false"
-          :itemId="index"
-          :itemTitle="issue.identification"
-          @down="down"
-          @up="up"
-        />
-      </pkp-list-item>
-    </pkp-list>
+      </li>
+    </ul>
     <h3>Usage of mixin for handling dialogs.</h3>
     <my-component-with-dialog />
     <h3>Extending component</h3>
@@ -60,16 +53,6 @@ export default {
   methods: {
     incrementCount() {
       this.count += 2;
-    },
-    up(itemIndex) {
-      if (itemIndex > 0) {
-        arraymove(this.issues, itemIndex, itemIndex - 1);
-      }
-    },
-    down(itemIndex) {
-      if (itemIndex < this.issues.length - 1) {
-        arraymove(this.issues, itemIndex, itemIndex + 1);
-      }
     },
   },
 };
